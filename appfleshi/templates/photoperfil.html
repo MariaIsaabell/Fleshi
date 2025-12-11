@@ -1,0 +1,40 @@
+{% extends "homepage.html" %}
+
+{% block title %}
+    Alterar Foto de Perfil
+{% endblock %}
+
+{% block body %}
+    <div style="text-align: center; margin-top: 50px;">
+        <h2>Alterar Foto de Perfil</h2>
+        <hr>
+
+        <p>Foto Atual:</p>
+        <img src="{{ url_for('static', filename='profile_photos/' ~ current_user.profile_photo) }}"
+             alt="Foto Atual"
+             style="width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 2px solid #333;">
+
+        <br><br>
+
+        <div style="border: 1px solid #ccc; padding: 20px; display: inline-block; border-radius: 10px;">
+            <form method="POST" action="" enctype="multipart/form-data">
+                {{ form_profile.hidden_tag() }}
+
+                <p>
+                    {{ form_profile.photo.label }}<br>
+                    {{ form_profile.photo() }}
+                </p>
+
+                {% for error in form_profile.photo.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+
+                <br>
+                <p>{{ form_profile.submit() }}</p>
+            </form>
+        </div>
+
+        <br><br>
+        <a href="{{ url_for('profile', user_id=current_user.id) }}">Cancelar e Voltar</a>
+    </div>
+{% endblock %}

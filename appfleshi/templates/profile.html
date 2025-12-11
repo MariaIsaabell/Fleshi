@@ -1,0 +1,46 @@
+{% extends "homepage.html" %}
+
+{% block title %}
+    Fléshi - Perfil
+{% endblock %}
+
+{% block body %}
+    <body>
+
+    {% include "navbar.html" %}
+
+        <h1>Perfil do usuário: {{ user.username }}</h1>
+
+        <div class="profile-header">
+        <img src="{{ url_for('static', filename='profile_photos/' + user.profile_photo) }}"
+             alt="Foto de Perfil"
+             class="profile-img"
+             style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid #333; object-fit: cover;">
+
+    {% if current_user.id == user.id %}
+        <br>
+        <a href="{{ url_for('photoperfil') }}">Editar Foto de Perfil</a>
+    {% endif %}
+</div>
+<hr>
+
+        {% if form %}
+        <form method="post" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+
+            {{ form.photo }}
+
+            {{ form.submit }}
+        </form>
+        {% endif %}
+
+        {% for photo in user.photos %}
+            <img src="{{ url_for('static', filename='posts_photos/'~ photo.file_name) }}" alt="Imagem">
+
+            <form method="post" action="{{ url_for('delete_photos', photo_id=photo.id) }}" >
+                <button type="submit">Excluir</button>
+            </form>
+        {% endfor %}
+
+    </body>
+{% endblock %}
