@@ -5,44 +5,71 @@
 {% endblock %}
 
 {% block body %}
+
     {% include "navbar.html" %}
-    <h1>Feed Principal</h1>
 
-    {% for photo in photos %}
-        <a href="{{ url_for('profile', user_id = photo.user_id) }}">
-            <img src="{{ url_for('static', filename='posts_photos/'~ photo.file_name) }}" alt="Imagem">
-        </a>
-    {% endfor %}
+    <div class="container mt-4">
 
-  {% for photo in photos %}
+        <h1 class="text-center mb-5" style="color: #6610f2;">Feed Principal</h1>
 
-    <div class="card mb-3">
-      <img src="{{ url_for('static', filename='posts_photos/' + photo.file_name) }}" class="card-img-top">
+        <div class="row">
 
-      <div class="card-body">
+            {% for photo in photos %}
 
-        <div class="d-flex">
-            <form method="POST" action="{{ url_for('like_action', photo_id=photo.id) }}">
-                {{ form.csrf_token }}
+                <div class="col-12 col-md-6 col-lg-4 mb-4">
 
-                {% for like in photo.likes if like.user_id == current_user.id %}
+                    <div class="card shadow h-100" style="border: 1px solid #6610f2; border-radius: 15px; overflow: hidden;">
 
-                    <button type="submit" class="btn btn-danger">
-                        Descurtir {{ photo.likes|length }}
-                    </button>
+                        <div class="card-header d-flex align-items-center justify-content-between" style="background-color: #6610f2; color: white;">
+                            <a href="{{ url_for('profile', user_id=photo.user_id) }}" class="text-decoration-none text-white fw-bold">
+                                <i class="bi bi-person-circle me-1"></i> Usuário {{ photo.user_id }}
+                            </a>
+                        </div>
 
+                        <a href="{{ url_for('profile', user_id = photo.user_id) }}">
+                            <img src="{{ url_for('static', filename='posts_photos/' + photo.file_name) }}"
+                                 class="card-img-top"
+                                 alt="Post"
+                                 style="height: 300px; object-fit: cover;">
+                        </a>
+
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <form method="POST" action="{{ url_for('like_action', photo_id=photo.id) }}">
+                                    {{ form.csrf_token }}
+
+                                    {% for like in photo.likes if like.user_id == current_user.id %}
+
+                                        <button type="submit" class="btn btn-sm btn-danger rounded-pill">
+                                            Descurtir
+                                        </button>
+
+                                    {% else %}
+
+                                        <button type="submit" class="btn btn-sm btn-outline-light text-dark border-0 p-0" style="color: #6610f2 ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#6610f2" class="bi bi-heart me-1" viewBox="0 0 16 16">
+                                              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                            </svg>
+                                            <span style="color: #6610f2; font-weight: bold;">Curtir</span>
+                                        </button>
+
+                                    {% endfor %}
+                                </form>
+
+                                <span class="badge rounded-pill" style="background-color: #6610f2;">
+                                    {{ photo.likes|length }}
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    </div>
                 {% else %}
+                <div class="col-12 text-center">
+                    <h3 class="text-muted">Nenhuma foto encontrada...</h3>
+                </div>
+            {% endfor %}
 
-                    <button type="submit" class="btn btn-outline-danger">
-                        Curtir {{ photo.likes|length }}
-                    </button>
-
-                {% endfor %}
-            </form>
-        </div>
-        </div>
-    </div>
-
-  {% endfor %}
+        </div> </div>
 
 {% endblock %}
