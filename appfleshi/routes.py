@@ -1,16 +1,16 @@
 from urllib import request
 
 from dns.dnssec import validate
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 from flask_login import login_required, login_user, logout_user, current_user
 from flask_wtf.file import file_required
 from wtforms.validators import none_of
 import os
 from werkzeug.utils import secure_filename
 
-from appfleshi.forms import LoginForm, RegisterForm, PhotoForm, ProfilePhotoForm
+from appfleshi.forms import LoginForm, RegisterForm, PhotoForm, ProfilePhotoForm, LikeForm
 from appfleshi import app, database, bcrypt
-from appfleshi.models import User, Photo
+from appfleshi.models import User, Photo, Like
 
 from appfleshi import app
 
@@ -81,11 +81,14 @@ def logout():
     logout_user()
     return redirect(url_for('homepage'))
 
+
 @app.route("/feed")
 @login_required
 def feed():
     photos = Photo.query.order_by(Photo.upload_date.desc()).all()
-    return render_template("feed.html", photos=photos)
+
+    form = LikeForm()
+    return render_template("feed.html", photos=photos, form=form)
 
 @app.route("/photoperfil", methods=['GET', 'POST'])
 @login_required
@@ -107,25 +110,27 @@ def photoperfil():
 
     return render_template("photoperfil.html", form_profile=form_profile)
 
+
+# CERTO: Use um nome diferente, tudo em minúsculo
 @app.route('/like/<int:photo_id>', methods=['POST'])
 @login_required
-def like(photo_id):
-    form = LikeForm()
+def like_action(photo_id):  # <--- Mudei para like_action
 
+    form = LikeForm()
     if form.validate_on_submit():
         photo = Photo.query.get(photo_id)
 
-        likes = Like.query.filter_by(user_id=current_user.id, photo_id=photo_id).first()
+        # Agora o Python sabe que esse 'Like' aqui é a Classe do banco
+        like_existente = Like.query.filter_by(user_id=current_user.id, photo_id=photo_id).first()
 
-        if likes:
-            database.session.delete(likes)
+        if like_existente:
+            database.session.delete(like_existente)
         else:
             novo_like = Like(user_id=current_user.id, photo_id=photo_id)
             database.session.add(novo_like)
 
         database.session.commit()
 
-    return redirect(url_for('feed', user_id=current_user.id))
-
+    return redirect(request.referrer)
 
 
