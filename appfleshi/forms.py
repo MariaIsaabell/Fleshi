@@ -12,6 +12,9 @@ class ProfilePhotoForm(FlaskForm):
     photo = FileField("Foto de Perfil", validators=[DataRequired()])
     submit = SubmitField("Salvar Foto")
 
+class LikeForm(FlaskForm):
+    submit = SubmitField("Entrar")
+
 class LoginForm(FlaskForm):
     email = StringField("E-mail", validators=[DataRequired(), Email()])
     password = PasswordField("Senha", validators=[DataRequired()])

@@ -13,4 +13,36 @@
             <img src="{{ url_for('static', filename='posts_photos/'~ photo.file_name) }}" alt="Imagem">
         </a>
     {% endfor %}
+
+  {% for photo in photos %}
+
+    <div class="card mb-3">
+      <img src="{{ url_for('static', filename='posts_photos/' + photo.file_name) }}" class="card-img-top">
+
+      <div class="card-body">
+
+        <div class="d-flex">
+            <form method="POST" action="{{ url_for('like', photo_id=photo.id) }}">
+                {{ form.csrf_token }}
+
+                {% for like in photo.likes if like.user_id == current_user.id %}
+
+                    <button type="submit" class="btn btn-danger">
+                        Descurtir {{ photo.likes|length }}
+                    </button>
+
+                {% else %}
+
+                    <button type="submit" class="btn btn-outline-danger">
+                        Curtir {{ photo.likes|length }}
+                    </button>
+
+                {% endfor %}
+            </form>
+        </div>
+        </div>
+    </div>
+
+  {% endfor %}
+
 {% endblock %}

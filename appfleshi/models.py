@@ -20,3 +20,10 @@ class Photo(database.Model):
     file_name = database.Column(database.String(255), default="default.png")
     upload_date = database.Column(database.DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
     user_id = database.Column(database.Integer, database.ForeignKey('user.id'), nullable=False)
+    likes = database.relationship('Like', backref='photo', lazy=True)
+
+class Like(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    creation_date = database.Column(database.DateTime, default=lambda: datetime.now(timezone.utc))
+    user_id = database.Column(database.Integer, database.ForeignKey('user.id'))
+    photo_id = database.Column(database.Integer, database.ForeignKey('photo.id'))

@@ -107,5 +107,25 @@ def photoperfil():
 
     return render_template("photoperfil.html", form_profile=form_profile)
 
+@app.route('/like/<int:photo_id>', methods=['POST'])
+@login_required
+def like(photo_id):
+    form = LikeForm()
+
+    if form.validate_on_submit():
+        photo = Photo.query.get(photo_id)
+
+        likes = Like.query.filter_by(user_id=current_user.id, photo_id=photo_id).first()
+
+        if likes:
+            database.session.delete(likes)
+        else:
+            novo_like = Like(user_id=current_user.id, photo_id=photo_id)
+            database.session.add(novo_like)
+
+        database.session.commit()
+
+    return redirect(url_for('feed', user_id=current_user.id))
+
 
 
