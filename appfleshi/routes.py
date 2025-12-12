@@ -99,7 +99,6 @@ def photoperfil():
         file = form_profile.photo.data
         secure_name = secure_filename(file.filename)
 
-        # CORREÇÃO AQUI: Salvar na pasta 'profile_photos' e não na 'posts_photos'
         upload_path = os.path.join(app.root_path, 'static', 'profile_photos', secure_name)
         file.save(upload_path)
 
