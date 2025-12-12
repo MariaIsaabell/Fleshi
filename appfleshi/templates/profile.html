@@ -5,42 +5,85 @@
 {% endblock %}
 
 {% block body %}
-    <body>
 
     {% include "navbar.html" %}
 
-        <h1>Perfil do usuário: {{ user.username }}</h1>
+    <div class="container mt-4">
 
-        <div class="profile-header">
-        <img src="{{ url_for('static', filename='profile_photos/' + user.profile_photo) }}"
-             alt="Foto de Perfil"
-             class="profile-img"
-             style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid #333; object-fit: cover;">
+        <div class="d-flex flex-column flex-md-row align-items-center mb-5">
 
-    {% if current_user.id == user.id %}
-        <br>
-        <a href="{{ url_for('photoperfil') }}">Editar Foto de Perfil</a>
-    {% endif %}
-</div>
-<hr>
+            <div class="flex-shrink-0">
+                <img src="{{ url_for('static', filename='profile_photos/' + user.profile_photo) }}"
+                     alt="Foto de Perfil"
+                     class="shadow-sm"
+                     style="width: 160px; height: 160px; border-radius: 50%; border: 4px solid #6610f2; object-fit: cover;">
+            </div>
+
+            <div class="flex-grow-1 ms-md-4 mt-3 mt-md-0 text-center text-md-start">
+
+                <h2 class="fw-bold mb-1" style="color: #6610f2;">
+                    {{ user.username }}
+                </h2>
+                <p class="text-muted">Usuário do Fléshi</p>
+
+                {% if current_user.id == user.id %}
+                    <a href="{{ url_for('photoperfil') }}" class="btn btn-sm btn-outline-dark rounded-pill px-4">
+                        Editar Foto
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <hr class="mb-5">
 
         {% if form %}
-        <form method="post" enctype="multipart/form-data">
-            {{ form.csrf_token }}
+            <div class="card p-4 mb-5 border-0 shadow-sm bg-light">
+                <h5 class="mb-3" style="color: #6610f2;">Nova Publicação</h5>
 
-            {{ form.photo }}
+                <form method="post" enctype="multipart/form-data" class="row g-2 align-items-center">
+                    {{ form.csrf_token }}
 
-            {{ form.submit }}
-        </form>
+                    <div class="col-md-9">
+                        {{ form.photo(class="form-control") }}
+                    </div>
+
+                    <div class="col-md-3">
+                        {{ form.submit(class="btn text-white fw-bold w-100", style="background-color: #6610f2;") }}
+                    </div>
+                </form>
+            </div>
         {% endif %}
 
-        {% for photo in user.photos %}
-            <img src="{{ url_for('static', filename='posts_photos/'~ photo.file_name) }}" alt="Imagem">
+        <h4 class="mb-4" style="color: #6610f2;">Fotos Publicadas</h4>
 
-            <form method="post" action="{{ url_for('delete_photos', photo_id=photo.id) }}" >
-                <button type="submit">Excluir</button>
-            </form>
-        {% endfor %}
+        <div class="row g-3">
+            {% for photo in user.photos %}
 
-    </body>
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm position-relative">
+
+                        <img src="{{ url_for('static', filename='posts_photos/'~ photo.file_name) }}"
+                             alt="Imagem"
+                             class="card-img-top rounded"
+                             style="height: 250px; object-fit: cover;">
+
+                        <div class="card-body p-2">
+                             {% if current_user.id == user.id %}
+                            <form method="post" action="{{ url_for('delete_photos', photo_id=photo.id) }}">
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100 rounded-pill" style="font-size: 0.8rem;">
+                                    Excluir
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+
+    </div>
+
 {% endblock %}
