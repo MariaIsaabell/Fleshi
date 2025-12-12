@@ -12,6 +12,7 @@
 
             <div class="text-center mb-4">
                 <h1 class="fw-bold" style="color: #6610f2;">Crie sua conta</h1>
+                <p class="text-muted">Junte-se à comunidade Fléshi</p>
             </div>
 
             <div class="card shadow-lg border-0 rounded-4">
@@ -22,56 +23,56 @@
 
                         <div class="form-floating mb-3">
                             {% if form.username.errors %}
-                                {{ form.username(class="form-control is-invalid", placeholder="Usuário", id="floatUser") }}
+                                {{ form.username(class="form-control is-invalid", placeholder="Usuário", id="floatUser", required=True) }}
                                 <div class="invalid-feedback">
                                     {% for erro in form.username.errors %}
                                         {{ erro }}
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                {{ form.username(class="form-control", placeholder="Usuário") }}
+                                {{ form.username(class="form-control", placeholder="Usuário", required=True) }}
                             {% endif %}
                             <label>Nome de Usuário</label>
                         </div>
 
                         <div class="form-floating mb-3">
                             {% if form.email.errors %}
-                                {{ form.email(class="form-control is-invalid", placeholder="Email", id="floatEmail") }}
+                                {{ form.email(class="form-control is-invalid", placeholder="Email", id="floatEmail", required=True) }}
                                 <div class="invalid-feedback">
                                     {% for erro in form.email.errors %}
                                         {{ erro }}
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                {{ form.email(class="form-control", placeholder="Email") }}
+                                {{ form.email(class="form-control", placeholder="Email", required=True) }}
                             {% endif %}
                             <label>Email</label>
                         </div>
 
                         <div class="form-floating mb-3">
                             {% if form.password.errors %}
-                                {{ form.password(class="form-control is-invalid", placeholder="Senha", id="floatPass") }}
+                                {{ form.password(class="form-control is-invalid", placeholder="Senha", id="floatPass", required=True) }}
                                 <div class="invalid-feedback">
                                     {% for erro in form.password.errors %}
                                         {{ erro }}
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                {{ form.password(class="form-control", placeholder="Senha") }}
+                                {{ form.password(class="form-control", placeholder="Senha", required=True) }}
                             {% endif %}
                             <label>Senha</label>
                         </div>
 
                         <div class="form-floating mb-4">
                             {% if form.confirm_password.errors %}
-                                {{ form.confirm_password(class="form-control is-invalid", placeholder="Confirmar", id="floatConfirm") }}
+                                {{ form.confirm_password(class="form-control is-invalid", placeholder="Confirmar", id="floatConfirm", required=True) }}
                                 <div class="invalid-feedback">
                                     {% for erro in form.confirm_password.errors %}
                                         {{ erro }}
                                     {% endfor %}
                                 </div>
                             {% else %}
-                                {{ form.confirm_password(class="form-control", placeholder="Confirmar") }}
+                                {{ form.confirm_password(class="form-control", placeholder="Confirmar", required=True) }}
                             {% endif %}
                             <label>Confirmar Senha</label>
                         </div>

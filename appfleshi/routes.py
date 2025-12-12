@@ -110,17 +110,14 @@ def photoperfil():
 
     return render_template("photoperfil.html", form_profile=form_profile)
 
-
-# CERTO: Use um nome diferente, tudo em minúsculo
 @app.route('/like/<int:photo_id>', methods=['POST'])
 @login_required
-def like_action(photo_id):  # <--- Mudei para like_action
+def like_action(photo_id):
 
     form = LikeForm()
     if form.validate_on_submit():
         photo = Photo.query.get(photo_id)
 
-        # Agora o Python sabe que esse 'Like' aqui é a Classe do banco
         like_existente = Like.query.filter_by(user_id=current_user.id, photo_id=photo_id).first()
 
         if like_existente:
