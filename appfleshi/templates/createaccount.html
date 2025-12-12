@@ -1,37 +1,99 @@
 {% extends "homepage.html" %}
 
 {% block title %}
-  Fléshi  - Criar Conta
+    Fléshi - Criar Conta
 {% endblock %}
 
-{% block form %}
-   <form method="post">
-     {{ form.csrf_token }}
-        {{ form.email.label() }}
-        {{ form.email() }}
+{% block body %}
 
-         {% if form.email.errors %}
-            {% for erro in form.email.errors %}
-              <p class="alert alert-danger">{{ erro }}</p>
-            {% endfor %}
-         {% endif %}
+    <div class="container d-flex justify-content-center align-items-center min-vh-100 py-5">
 
-        {{ form.username.label }}
-        {{ form.username() }}
+        <div class="col-11 col-md-8 col-lg-5">
 
-          {% if form.username.errors %}
-            {% for erro in form.username.errors %}
-              <p class="alert alert-danger">{{ erro }}</p>
-            {% endfor %}
-         {% endif %}
+            <div class="text-center mb-4">
+                <h1 class="fw-bold" style="color: #6610f2;">Crie sua conta</h1>
+            </div>
 
-        {{ form.password.label() }}
-        {{ form.password() }}
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-5">
 
-        {{ form.confirm_password.label() }}
-        {{ form.confirm_password() }}
+                    <form method="post">
+                        {{ form.csrf_token }}
 
-        {{ form.submit() }}
-   </form>
-<a href="{{url_for('homepage')}}">Já possui uma conta? Faça o login</a>
+                        <div class="form-floating mb-3">
+                            {% if form.username.errors %}
+                                {{ form.username(class="form-control is-invalid", placeholder="Usuário", id="floatUser") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.username.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.username(class="form-control", placeholder="Usuário") }}
+                            {% endif %}
+                            <label>Nome de Usuário</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {% if form.email.errors %}
+                                {{ form.email(class="form-control is-invalid", placeholder="Email", id="floatEmail") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.email.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.email(class="form-control", placeholder="Email") }}
+                            {% endif %}
+                            <label>Email</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            {% if form.password.errors %}
+                                {{ form.password(class="form-control is-invalid", placeholder="Senha", id="floatPass") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.password.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.password(class="form-control", placeholder="Senha") }}
+                            {% endif %}
+                            <label>Senha</label>
+                        </div>
+
+                        <div class="form-floating mb-4">
+                            {% if form.confirm_password.errors %}
+                                {{ form.confirm_password(class="form-control is-invalid", placeholder="Confirmar", id="floatConfirm") }}
+                                <div class="invalid-feedback">
+                                    {% for erro in form.confirm_password.errors %}
+                                        {{ erro }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.confirm_password(class="form-control", placeholder="Confirmar") }}
+                            {% endif %}
+                            <label>Confirmar Senha</label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-lg text-white fw-bold rounded-pill", style="background-color: #6610f2;") }}
+                        </div>
+
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <span class="text-muted small">Já possui uma conta?</span>
+                        <br>
+                        <a href="{{ url_for('homepage') }}" class="text-decoration-none fw-bold" style="color: #6610f2;">
+                            Faça o login aqui
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 {% endblock %}
